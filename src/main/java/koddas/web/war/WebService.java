@@ -25,12 +25,22 @@ import com.google.gson.Gson;
 @Path("service")
 public class WebService {
 	
+	/**
+	 * Prints "It's working" when /wwp-1.0.0/webapi/service is accessed.
+	 * 
+	 * @return A web response.
+	 */
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response root() {
 		return Response.ok("It's working").build();
 	}
 	
+	/**
+	 * Prints "Hello, World!" when /wwp-1.0.0/webapi/service/hello is accessed.
+	 * 
+	 * @return A web response.
+	 */
 	@GET
 	@Path("/hello")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -38,21 +48,34 @@ public class WebService {
 		return Response.ok("Hello, World!").build();
 	}
 
+	/**
+	 *  Prints current time when /wwp-1.0.0/webapi/service/time is accessed.
+	 * 
+	 * @return A web response.
+	 */
 	@GET
 	@Path("/time")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response time() {
-		Gson gson = new Gson();
 		Response response = null;
 		DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 		Date dateobj = new Date();
 		
-		gson.toJson(df.format(dateobj));
-		response = Response.ok(gson.toString()).build();
+		response = Response.ok(df.format(dateobj)).build();
 		
 		return response;
 	}
-	
+
+	/**
+	 *  Returns a JSON representation of a MrBean object when
+	 *  /wwp-1.0.0/webapi/service/send is accessed.
+	 * 
+	 * @param name Mr Bean's new name
+	 * @param age Mr Bean's new age
+	 * @param nationality Mr Bean's new nationality
+	 * @param carBrand The brand of Mr Bean's new car
+	 * @return A web response.
+	 */
 	@POST
 	@Path("/send")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -70,9 +93,22 @@ public class WebService {
 		
 		gson.toJson(bean);
 		
-		return Response.ok(gson).build();
+		return Response.ok(gson.toJson(bean)).build();
 	}
 	
+	/**
+	 *  Returns a JSON representation of a MrBean object and a recipient when
+	 *  /wwp-1.0.0/webapi/service/send/{to} is accessed.
+	 *  
+	 *  The {to} part of the URL can be any URL-encoded string.
+	 * 
+	 * @param to The name of the recipient of the Mr Bean object
+	 * @param name Mr Bean's new name
+	 * @param age Mr Bean's new age
+	 * @param nationality Mr Bean's new nationality
+	 * @param carBrand The brand of Mr Bean's new car
+	 * @return A web response.
+	 */
 	@POST
 	@Path("/send/{to}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -80,7 +116,7 @@ public class WebService {
 			@FormParam("name") String name,
 			@FormParam("age") int age,
 			@FormParam("nationality") String nationality,
-			@FormParam("carBrand") String carBrand) {
+			@FormParam("car_brand") String carBrand) {
 		Gson gson = new Gson();
 		MrBean bean = new MrBean();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -95,6 +131,6 @@ public class WebService {
 		
 		gson.toJson(map);
 		
-		return Response.ok(gson).build();
+		return Response.ok(gson.toJson(map)).build();
 	}
 }
