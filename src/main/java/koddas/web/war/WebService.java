@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
@@ -21,18 +22,25 @@ import com.google.gson.Gson;
  * 
  * @author Johan Holmberg
  */
+@Path("service")
 public class WebService {
 	
 	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response root() {
+		return Response.ok("It's working").build();
+	}
+	
+	@GET
 	@Path("/hello")
-	@Produces("text/plain")
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response hello() {
 		return Response.ok("Hello, World!").build();
 	}
 
 	@GET
 	@Path("/time")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response time() {
 		Gson gson = new Gson();
 		Response response = null;
@@ -47,7 +55,7 @@ public class WebService {
 	
 	@POST
 	@Path("/send")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response send(@FormParam("name") String name,
 			@FormParam("age") int age,
 			@FormParam("nationality") String nationality,
@@ -67,7 +75,7 @@ public class WebService {
 	
 	@POST
 	@Path("/send/{to}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response send(@PathParam("to") String to,
 			@FormParam("name") String name,
 			@FormParam("age") int age,
