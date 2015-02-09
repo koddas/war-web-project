@@ -22,7 +22,7 @@ import com.google.gson.Gson;
  * 
  * @author Johan Holmberg
  */
-@Path("service")
+@Path("service")  // By altering the argument, you'll change the service's URL
 public class WebService {
 	
 	/**
@@ -30,8 +30,8 @@ public class WebService {
 	 * 
 	 * @return A web response.
 	 */
-	@GET
-	@Produces(MediaType.TEXT_PLAIN)
+	@GET // This endpoint will be available using GET and GET only 
+	@Produces(MediaType.TEXT_PLAIN) // The response will be in plain text.
 	public Response root() {
 		return Response.ok("It's working").build();
 	}
@@ -42,7 +42,7 @@ public class WebService {
 	 * @return A web response.
 	 */
 	@GET
-	@Path("/hello")
+	@Path("/hello") // This is appended to your URL, that is "service/hello"
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response hello() {
 		return Response.ok("Hello, World!").build();
@@ -110,7 +110,7 @@ public class WebService {
 	 * @return A web response.
 	 */
 	@POST
-	@Path("/send/{to}")
+	@Path("/send/{to}") // {to} will map to the to parameter.
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response send(@PathParam("to") String to,
 			@FormParam("name") String name,

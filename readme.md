@@ -39,6 +39,36 @@ command from the command line:
 
 Open a new browser window/tab and type in *localhost:4848*. Find the
 *Applications* link in the menu and click it. Next, click the *Deploy* button
-and select *./target/WarWebProject-1.0.0.jar*.
+and select *./target/WarWebProject-1.0.0.jar*. Once done, click the *Launch*
+link and you're all set to try your new application. It will be made available
+at *http://localhost:8080/wwp-1.0.0*.
 
-TODO: Skriv klart det här avsnittet.
+# How do I configure my application?
+
+## The web page
+
+The web application (or *servlet* in Java lingo) comes with a very simple web
+page. It is written in
+[JSP](http://www.courses.coreservlets.com/Course-Materials/csajsp2.html), a web
+language akin to ASP or PHP (although I only use standard HTML in this
+example). You can put as many JSP pages as you wish in the *src/main/webapp/*
+folder. Static resources, such as CSS files or images, are put in
+*src/main/webapp/static/* and accessed by linking to *static/style.css* (for an
+example CSS file).
+
+## The application path
+
+As you'll see, your application's URL needs to be amended with
+*/webapi/service/* in order to actually do something. This isn't something that
+is selected at random, but is set in your *web.xml* file (which you'll find in
+*src/main/webapp/WEB-INF/*), as well as in your servlet Java file.
+
+The */webapi/* part is set by the *<url-pattern>* directive in *web.xml*. The
+*/service/* part is set by altering the argument to the initial *@Path*
+annotation in the servlet's source code. In this case, that file is
+*WebService.java*, that you'll find in *src/main/java/koddas/web/war*.
+
+By changing these values and rebuilding (and consequent redeploying) your
+project, you'll be able to reach your application with your fancy new path.
+Please note that the links displayed on the web page will not change
+accordingly, as they are set manually.

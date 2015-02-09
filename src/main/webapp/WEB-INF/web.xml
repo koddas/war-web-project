@@ -7,12 +7,12 @@
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>koddas.web.war</param-value>
+            <param-value>koddas.web.war</param-value> <!-- Set this value to whatever you name your own root package to -->
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>War Web service</servlet-name>
-        <url-pattern>/webapi/*</url-pattern>
+        <servlet-name>War Web service</servlet-name> <!-- Set this to whatever you'd like your service to be called -->
+        <url-pattern>/webapi/*</url-pattern> <!-- Not happy with the /webapi/ infix? Change it here -->
     </servlet-mapping>
 </web-app>
