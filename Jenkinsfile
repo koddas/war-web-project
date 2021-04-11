@@ -33,4 +33,15 @@ pipeline {
             }
         }
     }
+    post {
+        always{
+            deleteDir()
+        }
+        failure {
+            echo "sendmail -s mvn build failed receipients@my.com"
+        }
+        success {
+            echo "The job is successful"
+        }
+    }
 }
