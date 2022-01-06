@@ -1,6 +1,6 @@
-########### About this project
+########
 
-Demo case
+This is my first line
 
 
 This project is a simple demo web application using Java annotations. It
