@@ -7,7 +7,6 @@ trigger:
 - master
 
 pool:
-  name: LocalAgentPool
   vmImage: ubuntu-latest
 
 steps:
