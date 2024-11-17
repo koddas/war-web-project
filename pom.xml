@@ -27,15 +27,24 @@
   
   <build>
     <plugins>
+      <!-- Update Maven WAR Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.4.0</version> <!-- Updated to a modern version -->
+      </plugin>
+
+      <!-- Update Maven Compiler Plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
+        <version>3.8.1</version> <!-- Updated to a modern version -->
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>17</source> <!-- Set to Java 17 -->
+          <target>17</target>
         </configuration>
       </plugin>
     </plugins>
   </build>
 </project>
+
