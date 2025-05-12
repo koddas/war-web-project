@@ -7,13 +7,23 @@ pipeline {
         timeout(10)
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '5')
     }
+    environment {
+        SONAR_AUTH_TOKEN = credentials('Jenkins-token') // Replace with your actual Jenkins credentials ID
+    }
     stages {
         stage('Build') {
             steps {
                 sh "mvn clean install"
             }
         }
-        stage('upload artifact to nexus') {
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('Jenkins-sonarqube') { // Replace with your Jenkins SonarQube server name
+                    sh 'mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN'
+                }
+            }
+        }
+        stage('Upload Artifact to Nexus') {
             steps {
                 nexusArtifactUploader artifacts: [
                     [
@@ -34,7 +44,7 @@ pipeline {
         }
     }
     post {
-        always{
+        always {
             deleteDir()
         }
         failure {
@@ -45,3 +55,4 @@ pipeline {
         }
     }
 }
+
