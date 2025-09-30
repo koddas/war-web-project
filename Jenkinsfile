@@ -1,47 +1,33 @@
 pipeline {
     agent any
+
     tools {
-        maven 'Maven363'
+        maven 'M3'
     }
-    options {
-        timeout(10)
-        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '5')
+
+    environment {
+        GIT_SSH_CREDENTIALS_ID = 'github-ssh-key' // use your actual ID
     }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                sh "mvn clean install"
+                git credentialsId: "${env.GIT_SSH_CREDENTIALS_ID}",
+                    url: 'git@github.com:your-org/your-private-repo.git',
+                    branch: 'main'
             }
         }
-        stage('upload artifact to nexus') {
+
+        stage('Build with Maven') {
             steps {
-                nexusArtifactUploader artifacts: [
-                    [
-                        artifactId: 'wwp', 
-                        classifier: '', 
-                        file: 'target/wwp-1.0.0.war', 
-                        type: 'war'
-                    ]
-                ], 
-                    credentialsId: 'nexus3', 
-                    groupId: 'koddas.web.war', 
-                    nexusUrl: '10.0.0.91:8081', 
-                    nexusVersion: 'nexus3', 
-                    protocol: 'http', 
-                    repository: 'samplerepo', 
-                    version: '1.0.0'
+                sh 'mvn clean package'
             }
         }
-    }
-    post {
-        always{
-            deleteDir()
-        }
-        failure {
-            echo "sendmail -s mvn build failed receipients@my.com"
-        }
-        success {
-            echo "The job is successful"
+
+        stage('Archive WAR') {
+            steps {
+                archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
+            }
         }
     }
 }
