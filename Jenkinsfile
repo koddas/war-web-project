@@ -1,32 +1,34 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'M3'
-    }
-
     environment {
-        GIT_SSH_CREDENTIALS_ID = 'github-ssh-key' // use your actual ID
+        JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
+        PATH = "$JAVA_HOME/bin:$PATH"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: "${env.GIT_SSH_CREDENTIALS_ID}",
-                    url: 'git@github.com:your-org/your-private-repo.git',
-                    branch: 'main'
+                git branch: 'main', url: 'https://github.com/koddas/war-web-project.git'
             }
         }
 
-        stage('Build with Maven') {
+        stage('Build WAR') {
             steps {
                 sh 'mvn clean package'
             }
         }
 
-        stage('Archive WAR') {
+        stage('Deploy to Tomcat') {
             steps {
-                archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
+                deploy adapters: [
+                    tomcat9(
+                        credentialsId: 'tomcat-creds',
+                        path: '/wwp-1.0.0',
+                        url: 'http://<your-ec2-public-ip>:8081/'
+                    )
+                ],
+                war: '/target/*.war'
             }
         }
     }
