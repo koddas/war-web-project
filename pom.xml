@@ -5,7 +5,7 @@
 
   <groupId>koddas.web.war</groupId>
   <artifactId>wwp</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>war</packaging>
 
   <name>WAR Web Project</name>
